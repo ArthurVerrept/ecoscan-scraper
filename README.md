@@ -1,4 +1,4 @@
-# Blickets
+# Web Scraper
 Web scraper to gather product name, brand and image link to be returned to our main api to be stored in the products database
 
 ## What you need:

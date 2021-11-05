@@ -3,9 +3,7 @@ Web scraper to gather product name, brand and image link to be returned to our m
 
 ## What you need:
 
-1. [node](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en)
-
-2. [npm](https://www.trufflesuite.com/ganache)
+1. [node v16.13.0](https://nodejs.org/en/)
 
 
 ## Set up:

@@ -82,22 +82,22 @@ async function scrapeProduct (trustedSites, page) {
     }
 }
 
-const trustedSites = ['appyshop', 'deebee', 'buycott', 'tesco', 'sainsburys', 'waitrose']
 
 export default async function getProduct(){
-
+    
     let page = await getPage('50008667')
-
+    
     let product = await scrapeProduct(trustedSites, page)
-
+    
     console.log(product)
-
+    
     page = await getPage('4009900482776')
-
+    
     product = await scrapeProduct(trustedSites, page)
-
+    
     console.log(product)
 }
+const trustedSites = ['appyshop', 'deebee', 'buycott', 'tesco', 'sainsburys', 'waitrose']
 
 
 

@@ -70,7 +70,6 @@ async function scrapeProduct (trustedSites, page) {
                 // if one matches go scrape data from there
                 if (trustedSite) {
                     // TODO: add scraping of data
-                    console.log(trustedSite)
                     let siteScraper = new scraperMap[trustedSite]
                     console.log('site: ' + await siteScraper.run())
                 }

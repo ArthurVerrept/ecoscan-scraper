@@ -10,14 +10,23 @@ Web scraper to gather product name, brand and image link to be returned to our m
 
 ## Set up:
 
-Install the project's server packages.
+
+Install the project's server packages
 
 ```bash
 > npm i
 ```
 
-## Run scraper:
+
+Compile the scraper into javascript
 
 ```bash
-> npm start
+> npm run build
 ```
+
+
+## Running the scraper:
+```bash
+> npm run start
+```
+

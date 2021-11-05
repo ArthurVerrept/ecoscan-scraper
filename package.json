@@ -4,16 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1", 
-    "start": "nodemon ./scraper.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./dist/index.js",
+    "build": "tsc build",
+    "watch": "tsc -watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/puppeteer": "^5.4.4",
     "puppeteer": "^11.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.14"
+    "nodemon": "^2.0.14",
+    "typescript": "^4.4.4"
   }
 }

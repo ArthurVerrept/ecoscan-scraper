@@ -1,4 +1,5 @@
-const puppeteer = require('puppeteer')
+import * as puppeteer from 'puppeteer'
+import scraperMap from './scrapers/index'
 
 // we want something that checks and returns name and pic of our item, 
 // if google can't find our item, it will check the first page of 
@@ -55,11 +56,11 @@ async function scrapeProduct (trustedSites, page) {
         for (let i = 0; i < divs.length; i++) {
 
             // get the url of shop using cite html tag it's linking to out the div
-            citeStr = await divs[i].$('cite')
+            const citeStr = await divs[i].$('cite')
 
             // if it found a url
             if(citeStr){
-                // remove extra text
+                // remove extra text (not necessary)
                 let re = new RegExp('.+?(?= )');
                 const siteUrl = re.exec(await citeStr.evaluate(el => el.textContent))[0]
 
@@ -70,6 +71,8 @@ async function scrapeProduct (trustedSites, page) {
                 if (trustedSite) {
                     // TODO: add scraping of data
                     console.log(trustedSite)
+                    let siteScraper = new scraperMap[trustedSite]
+                    console.log('site: ' + await siteScraper.run())
                 }
             }
         }
@@ -81,7 +84,8 @@ async function scrapeProduct (trustedSites, page) {
 
 const trustedSites = ['appyshop', 'deebee', 'buycott', 'tesco', 'sainsburys', 'waitrose']
 
-module.exports = async function getProduct(){
+export default async function getProduct(){
+
     let page = await getPage('50008667')
 
     let product = await scrapeProduct(trustedSites, page)

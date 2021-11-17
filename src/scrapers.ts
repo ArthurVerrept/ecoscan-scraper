@@ -6,7 +6,7 @@ import scraperMap from './scrapers/index'
 // google (10 sites) and if any of the sites in our trusted site list
 // have the item it will click on that and ge the data there
 
-async function getPage(barcode){
+async function getPage(barcode: string){
     // this creates a headless a browser
     const browser = await puppeteer.launch()
    
@@ -21,7 +21,7 @@ async function getPage(barcode){
 
 // passing in trusted sites as puppeteer logic is harder to process then
 // a simple includes on each site found as we loop through the pages
-async function scrapeProduct (trustedSites, page) {
+async function scrapeProduct (trustedSites: string[], page: puppeteer.Page) {
     // CHECK GOOGLE
 
     // $x selects an item in the page using xpath which returns an array
@@ -34,7 +34,7 @@ async function scrapeProduct (trustedSites, page) {
         const name = await nameEl.evaluate(el => el.textContent)
 
         // get image and extract src tag text
-        const img = await page.$eval('div.commercial-unit-desktop-rhs g-scrolling-carousel img', el => el.src)
+        const img = await page.$eval('div.commercial-unit-desktop-rhs g-scrolling-carousel img', (el:Element) => el.getAttribute('src'))
 
         const [brandEl] = await page.$x('//*[@id="rhs"]/div/div/div/div[5]/div[1]/div[3]/span[3]')
 
@@ -46,7 +46,7 @@ async function scrapeProduct (trustedSites, page) {
             brand,
             img
         }
-
+        
     } else {
         // get all divs with links to websites from page 1
         const divs = await page.$x('//*[@id="rso"]/div')
@@ -82,7 +82,7 @@ async function scrapeProduct (trustedSites, page) {
 }
 
 
-export default async function getProduct(){
+export default async function getProduct() {
     
     let page = await getPage('50008667')
     
@@ -96,12 +96,8 @@ export default async function getProduct(){
     
     console.log(product)
 }
-const trustedSites = ['appyshop', 'deebee', 'buycott', 'tesco', 'sainsburys', 'waitrose']
 
-
-
-
-
+const trustedSites: string[] = ['appyshop', 'deebee', 'buycott', 'tesco', 'sainsburys', 'waitrose']
 
 // const [imagesButton] = await page.$x('//*[@id="hdtb-msb"]/div[1]/div/div[4]/a')
 // await imagesButton.click()

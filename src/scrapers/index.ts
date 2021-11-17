@@ -1,7 +1,11 @@
+import buycott from './buycott'
+import appyshop from './appyshop'
+import deebee from './deebee'
+
 const scraperMap = {
-    appyshop: require('./appyshop'),
-    buycott: require('./buycott'),
-    deebee: require('./deebee')
+    appyshop,
+    buycott,
+    deebee
 }
 
 export default scraperMap

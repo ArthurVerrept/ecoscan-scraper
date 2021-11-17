@@ -1,10 +1,6 @@
 import { Puppeteer } from "puppeteer"
 
-module.exports = class deebee{
-    constructor(puppeteer: Puppeteer){
-
-    }
-
+export default class deebee {
     async run(){
         return 'deebee.js'
     }

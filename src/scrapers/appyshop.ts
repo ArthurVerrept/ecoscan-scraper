@@ -19,8 +19,8 @@ export default class appyshop {
 
         return {
             src: 'appyshop',
-            name,
-            brand,
+            name: name.trim(),
+            brand: brand.trim(),
             img
         }
     }

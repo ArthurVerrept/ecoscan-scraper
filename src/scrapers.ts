@@ -70,11 +70,11 @@ async function scrapeProduct (barcode: string, trustedSites: string[], browser: 
                 // for this div, check if it matches on of our trusted sites
                 // this returns a trusted site from our sites to be used later
                 const trustedSite = trustedSites.find(url => siteUrl.includes(url))
-
+                console.log('found ' + siteUrl)
                 // if one matches go scrape data from there
                 if (trustedSite) {
                     // TODO: add scraping of data
-                    console.log(trustedSite)
+                    console.log('matched to: ' + trustedSite)
                     // get link element
                     const siteLink = await divs[i].$('a')
                     // pull out URL
@@ -100,11 +100,14 @@ async function scrapeProduct (barcode: string, trustedSites: string[], browser: 
                     // close current page before potentially opening another
                     await sitePage.close()
 
+                    // if data is found it exits for loop aka stops looking at other pages
                     return data
                 }
             }
         }
         await page.close()
+
+        console.log('no matches')
         // if we make it here then no trusted sites were found and no data can be returned
         // TODO: return something appropriate
         return null

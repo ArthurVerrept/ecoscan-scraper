@@ -1,13 +1,11 @@
-import buycott from './buycott'
 import appyshop from './appyshop'
 import deebee from './deebee'
-import codecheck from './codecheck'
+import openfoodfacts from './openfoodfacts'
 
 const scraperMap = {
     appyshop,
-    buycott,
     deebee,
-    codecheck
+    openfoodfacts
 }
 
 export default scraperMap

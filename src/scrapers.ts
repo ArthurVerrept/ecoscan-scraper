@@ -1,6 +1,6 @@
-import * as puppeteer from 'puppeteer'
+import puppeteer from 'puppeteer'
 import scraperMap from './scrapers/index'
-
+import { Product } from './types/product'
 // we want something that checks and returns name and pic of our item, 
 // if google can't find our item, it will check the first page of 
 // google (10 sites) and if any of the sites in our trusted site list
@@ -9,7 +9,7 @@ import scraperMap from './scrapers/index'
 
 // passing in trusted sites as puppeteer logic is harder to process then
 // a simple includes on each site found as we loop through the pages
-async function scrapeProduct (barcode: string, trustedSites: string[], browser: puppeteer.Browser) {
+async function scrapeProduct (barcode: string, trustedSites: string[], browser: puppeteer.Browser): Promise<Product | undefined> {
 
     // creates a new page
     const page = await browser.newPage()
@@ -115,37 +115,36 @@ async function scrapeProduct (barcode: string, trustedSites: string[], browser: 
 }
 
 
-export default async function getProduct() {
+export default async function getProduct(barcode: string) {
     let browser = await puppeteer.launch()
     
-    let product = await scrapeProduct('5010358254470', trustedSites, browser)
+    const product = await scrapeProduct(barcode, trustedSites, browser) 
     
-    console.log(product)
-
     browser.close()
 
+    return product
 
-    browser = await puppeteer.launch()
+    // browser = await puppeteer.launch()
 
-    product = await scrapeProduct('9780141029542', trustedSites, browser)
+    // product = await scrapeProduct('9780141029542', trustedSites, browser)
     
-    console.log(product)
+    // console.log(product)
 
-    browser.close()
+    // browser.close()
 
 
-    browser = await puppeteer.launch()
+    // browser = await puppeteer.launch()
 
-    product = await scrapeProduct('4009900482776', trustedSites, browser)
+    // product = await scrapeProduct('4009900482776', trustedSites, browser)
     
-    console.log(product)
+    // console.log(product)
 
-    browser.close()
+    // browser.close()
 }
 
 // sainsburys got removed cause the site is shite
 // these are in order of what I have found to be the most consistently correct
-const trustedSites: string[] = ['codecheck', 'appyshop', 'deebee', 'buycott', 'tesco', 'waitrose']
+const trustedSites: string[] = ['openfoodfacts', 'appyshop', 'deebee', 'buycott', 'tesco', 'waitrose']
 
 // const [imagesButton] = await page.$x('//*[@id="hdtb-msb"]/div[1]/div/div[4]/a')
 // await imagesButton.click()

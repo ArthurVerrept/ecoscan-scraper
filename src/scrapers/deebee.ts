@@ -29,7 +29,7 @@ export default class deebee {
         let brand = await brandEl.evaluate(el => el.textContent)
 
         return {
-            src: 'openfoodfacts',
+            src: 'deebe',
             name: name.trim(),
             brand: brand.trim(),
             img

@@ -58,7 +58,6 @@ async function scrapeProduct (barcode: string, trustedSites: string[], browser: 
             await sitePage.goto(`https://www.google.com/search?q=${barcode}+${trustedSites[x]}`)
 
             const divs = await sitePage.$x('//*[@id="rso"]/div')
-            console.log(divs.length)
             for (let i = 0; i < divs.length; i++) {
                 let citeStr = await divs[i].$('cite')
                 if (citeStr) {
@@ -86,11 +85,10 @@ async function scrapeProduct (barcode: string, trustedSites: string[], browser: 
         }
         await sitePage.close()
         await page.close()
-        
-        console.log('no matches')
+    
         // if we make it here then no trusted sites were found and no data can be returned
         // TODO: return something appropriate
-        return null
+        return undefined
     }
 }
 

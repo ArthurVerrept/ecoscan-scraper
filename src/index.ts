@@ -6,6 +6,7 @@ const PORT = 8000;
 
 
 app.get('/', async (req, res) => {
+  console.log('in')
     res.send(await getProduct(req.query.barcode.toString()))
 })
 

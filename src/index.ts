@@ -6,8 +6,12 @@ const PORT = 8000;
 
 
 app.get('/', async (req, res) => {
-  console.log('in')
+  try{
     res.send(await getProduct(req.query.barcode.toString()))
+  }catch (e) {
+    // if there is an error just return nothing
+    res.send()
+  }
 })
 
 

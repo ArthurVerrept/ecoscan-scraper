@@ -16,7 +16,6 @@ async function scrapeProduct (barcode: string, trustedSites: string[], browser: 
    
     // go to google page of barcode
     await page.goto('https://www.google.com/search?q=' + barcode)
-
     // CHECK GOOGLE
 
     // $x selects an item in the page using xpath which returns an array

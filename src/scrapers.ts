@@ -10,85 +10,43 @@ import { Product } from './types/product'
 // passing in trusted sites as puppeteer logic is harder to process then
 // a simple includes on each site found as we loop through the pages
 async function scrapeProduct (barcode: string, trustedSites: string[], browser: puppeteer.Browser): Promise<Product | undefined> {
+    // for each div we are going to try match to one of our trusted sites
+    // and click on it to scrape from there
+    const sitePage = await browser.newPage()
+    for (let x = 0; x < trustedSites.length; x++) {
+        await sitePage.goto(`https://www.google.com/search?q=${barcode}+${trustedSites[x]}`)
 
-    // creates a new page
-    const page = await browser.newPage()
-   
-    // go to google page of barcode
-    await page.goto('https://www.google.com/search?q=' + barcode)
-    // CHECK GOOGLE
+        const divs = await sitePage.$x('//*[@id="rso"]/div')
+        for (let i = 0; i < divs.length; i++) {
+            let citeStr = await divs[i].$('cite')
+            if (citeStr) {
+                let re = new RegExp('.+?(?= )');
+                let siteUrl = re.exec(await citeStr.evaluate(el => el.textContent))[0]
+                // console.log(trustedSites[x], siteUrl)
+                if(siteUrl.includes(trustedSites[x])) {
+                    const siteLink = await divs[i].$('a')
+                    const newSiteURL = await siteLink.evaluate(el => el.getAttribute('href'))
 
-    // $x selects an item in the page using xpath which returns an array
-    // we extract that using [el]
-    const [nameEl] = await page.$x('//*[@id="rhs"]/div/div/div/div[2]/div[1]/div/div[1]')
-
-    let name: string | null = null
-    if (nameEl) {
-        name = await nameEl.evaluate(el => el.textContent)
-    }
-
-    // get image and extract src tag text
-    let img: string | null = null
-    try {
-        img = await page.$eval('div.commercial-unit-desktop-rhs g-scrolling-carousel img', (el:Element) => el.getAttribute('src'))
-    } catch {
-    }
-
-    const [brandEl] = await page.$x('//*[@id="rhs"]/div/div/div/div[5]/div[1]/div[3]/span[3]')
-    let brand: string | null = null
-    if (brandEl) {
-       brand = await brandEl.evaluate(el => el.textContent);
-    }
-
-    // if google is able to find all the product info in the sidebar
-    if (name && brand && img){
-        //  return all info from google
-        return {
-            src: 'google',
-            name: name.trim(),
-            brand: brand.trim(),
-            img
-        }
-    } else {
-        // for each div we are going to try match to one of our trusted sites
-        // and click on it to scrape from there
-        const sitePage = await browser.newPage()
-        for (let x = 0; x < trustedSites.length; x++) {
-            await sitePage.goto(`https://www.google.com/search?q=${barcode}+${trustedSites[x]}`)
-
-            const divs = await sitePage.$x('//*[@id="rso"]/div')
-            for (let i = 0; i < divs.length; i++) {
-                let citeStr = await divs[i].$('cite')
-                if (citeStr) {
-                    let re = new RegExp('.+?(?= )');
-                    let siteUrl = re.exec(await citeStr.evaluate(el => el.textContent))[0]
-                    // console.log(trustedSites[x], siteUrl)
-                    if(siteUrl.includes(trustedSites[x])) {
-                        const siteLink = await divs[i].$('a')
-                        const newSiteURL = await siteLink.evaluate(el => el.getAttribute('href'))
-
-                        // user agent will often state that we are using a headless browser which 
-                        // by default will return a permission denied on a lot of Cloudflare
-                        // services.
-                        // https://stackoverflow.com/questions/68696073/puppeteer-cloudflare-websites-return-403-forbidden
-                        // https://jsoverson.medium.com/how-to-bypass-access-denied-pages-with-headless-chrome-87ddd5f3413c
-                        await sitePage.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36')
-                        await sitePage.goto(newSiteURL)
-                        let siteScraper = new scraperMap[trustedSites[x]]
-                        const data = await siteScraper.run(sitePage)
-                        return data
-                    }
+                    // user agent will often state that we are using a headless browser which 
+                    // by default will return a permission denied on a lot of Cloudflare
+                    // services.
+                    // https://stackoverflow.com/questions/68696073/puppeteer-cloudflare-websites-return-403-forbidden
+                    // https://jsoverson.medium.com/how-to-bypass-access-denied-pages-with-headless-chrome-87ddd5f3413c
+                    await sitePage.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36')
+                    await sitePage.goto(newSiteURL)
+                    let siteScraper = new scraperMap[trustedSites[x]]
+                    const data = await siteScraper.run(sitePage)
+                    return data
                 }
             }
-
         }
-        await sitePage.close()
-        await page.close()
-    
-        // if we make it here then no trusted sites were found and no data can be returned
-        // TODO: return something appropriate
-        return undefined
+
     }
+    await sitePage.close()
+
+    // if we make it here then no trusted sites were found and no data can be returned
+    // TODO: return something appropriate
+    return undefined
 }
 
 

@@ -1,5 +1,6 @@
 import getProduct from './scrapers'
 import express from 'express'
+
 // rest of the code remains same
 const app = express();
 const PORT = process.env.port || 8000;

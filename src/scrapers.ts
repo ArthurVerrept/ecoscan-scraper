@@ -51,7 +51,12 @@ async function scrapeProduct (barcode: string, trustedSites: string[], browser: 
 
 
 export default async function getProduct(barcode: string) {
-    let browser = await puppeteer.launch()
+    let browser = await puppeteer.launch({
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+        ]
+    })
     
     const product = await scrapeProduct(barcode, trustedSites, browser) 
     

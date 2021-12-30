@@ -1,1 +1,1 @@
-web: npm run start --host=0.0.0.0 --port=$PORT
+web: npm run build && npm run start --host=0.0.0.0 --port=$PORT

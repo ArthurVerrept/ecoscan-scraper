@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 8000;
 app.get('/', async (req, res) => {
   
   try{
+    console.log("hello??")
     res.send(await getProduct(req.query.barcode.toString()))
   }catch (e) {
     // if there is an error just return nothing

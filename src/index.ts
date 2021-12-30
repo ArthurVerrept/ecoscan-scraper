@@ -10,7 +10,9 @@ app.get('/', async (req, res) => {
   
   try{
     console.log("hello??")
-    res.send(await getProduct(req.query.barcode.toString()))
+    const product = await getProduct(req.query.barcode.toString())
+    console.log(product)
+    res.send(product)
   }catch (e) {
     // if there is an error just return nothing
     res.send()

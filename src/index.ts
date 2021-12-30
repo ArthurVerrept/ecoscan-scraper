@@ -14,6 +14,7 @@ app.get('/', async (req, res) => {
     console.log(product)
     res.send(product)
   }catch (e) {
+    console.log(e)
     // if there is an error just return nothing
     res.send()
   }

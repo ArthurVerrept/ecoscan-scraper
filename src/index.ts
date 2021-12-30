@@ -3,16 +3,20 @@ import express from 'express'
 
 // rest of the code remains same
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 
-app.get('/', async (req, res) => {
+app.get('/b', async (req, res) => {
   try{
     res.send(await getProduct(req.query.barcode.toString()))
   }catch (e) {
     // if there is an error just return nothing
     res.send()
   }
+})
+
+app.get('/', async (req, res) => {
+    res.send('yo')
 })
 
 

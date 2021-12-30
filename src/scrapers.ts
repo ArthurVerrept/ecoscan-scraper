@@ -54,7 +54,7 @@ export default async function getProduct(barcode: string) {
     let browser = await puppeteer.launch({
         args: [
             '--no-sandbox',
-            '--disable-setuid-sandbox',
+            '--disable-setuid-sandbox'
         ]
     })
     

@@ -7,7 +7,6 @@ const PORT = process.env.PORT || 8000;
 
 
 app.get('/', async (req, res) => {
-  
   try{
     const product = await getProduct(req.query.barcode.toString())
     res.send(product)

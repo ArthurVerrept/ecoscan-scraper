@@ -40,7 +40,6 @@ async function scrapeProduct (barcode: string, trustedSites: string[], browser: 
                 }
             }
         }
-
     }
     await sitePage.close()
 

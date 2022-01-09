@@ -64,6 +64,4 @@ export default async function getProduct(barcode: string) {
     return product
 }
 
-// sainsburys got removed cause the site is shite
-// these are in order of what I have found to be the most consistently correct
 const trustedSites: string[] = ['openfoodfacts', 'appyshop', 'deebee']

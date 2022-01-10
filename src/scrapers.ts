@@ -13,8 +13,8 @@ async function scrapeProduct (barcode: string, trustedSites: string[], browser: 
     // for each div we are going to try match to one of our trusted sites
     // and click on it to scrape from there
     const sitePage = await browser.newPage()
-    for (let x = 0; x < trustedSites.length; x++) {
-        await sitePage.goto(`https://www.google.com/search?q=${barcode}+${trustedSites[x]}`)
+    for (const trustedSite of trustedSites) {
+        await sitePage.goto(`https://www.google.com/search?q=${barcode}+${trustedSite}`)
 
         const divs = await sitePage.$x('//*[@id="rso"]/div')
         for (let i = 0; i < divs.length; i++) {
@@ -23,7 +23,7 @@ async function scrapeProduct (barcode: string, trustedSites: string[], browser: 
                 let re = new RegExp('.+?(?= )');
                 let siteUrl = re.exec(await citeStr.evaluate(el => el.textContent))[0]
                 // console.log(trustedSites[x], siteUrl)
-                if(siteUrl.includes(trustedSites[x])) {
+                if(siteUrl.includes(trustedSite)) {
                     const siteLink = await divs[i].$('a')
                     const newSiteURL = await siteLink.evaluate(el => el.getAttribute('href'))
 
@@ -34,7 +34,7 @@ async function scrapeProduct (barcode: string, trustedSites: string[], browser: 
                     // https://jsoverson.medium.com/how-to-bypass-access-denied-pages-with-headless-chrome-87ddd5f3413c
                     await sitePage.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36')
                     await sitePage.goto(newSiteURL)
-                    let siteScraper = new scraperMap[trustedSites[x]]
+                    let siteScraper = new scraperMap[trustedSite]
                     const data = await siteScraper.run(sitePage)
                     return data
                 }

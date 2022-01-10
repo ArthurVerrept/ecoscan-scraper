@@ -7,7 +7,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "gcp-build": "tsc -p .",
     "start": "node dist/index.js",
     "build": "tsc",

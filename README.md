@@ -19,7 +19,7 @@ Install the project's server packages
 Compile the scraper into javascript
 
 ```bash
-> npm run watch
+> npm run build
 ```
 
 
